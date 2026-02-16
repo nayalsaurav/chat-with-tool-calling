@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { normalizeWeather } from "./utils";
+import { normalizeF1, normalizeStock, normalizeWeather } from "./utils";
 
 export const getWeather = tool({
   description: "Get the weather in a location (fahrenheit)",
@@ -45,50 +45,7 @@ export const getF1Matches = tool({
         return { message: "No upcoming race found." };
       }
 
-      const raceDateUTC = new Date(`${race.date}T${race.time}`);
-
-      return {
-        season: race.season,
-        round: race.round,
-        raceName: race.raceName,
-
-        circuit: {
-          name: race.Circuit.circuitName,
-          locality: race.Circuit.Location.locality,
-          country: race.Circuit.Location.country,
-          lat: Number(race.Circuit.Location.lat),
-          long: Number(race.Circuit.Location.long),
-        },
-
-        race: {
-          dateUTC: raceDateUTC.toISOString(),
-          localDate: raceDateUTC.toLocaleDateString("en-IN", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }),
-          localTime: raceDateUTC.toLocaleTimeString("en-IN", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-
-        sessions: {
-          fp1: race.FirstPractice
-            ? `${race.FirstPractice.date}T${race.FirstPractice.time}`
-            : null,
-          fp2: race.SecondPractice
-            ? `${race.SecondPractice.date}T${race.SecondPractice.time}`
-            : null,
-          fp3: race.ThirdPractice
-            ? `${race.ThirdPractice.date}T${race.ThirdPractice.time}`
-            : null,
-          qualifying: race.Qualifying
-            ? `${race.Qualifying.date}T${race.Qualifying.time}`
-            : null,
-        },
-      };
+      return normalizeF1(race);
     } catch {
       return { error: "Unable to fetch F1 race data." };
     }
@@ -109,17 +66,7 @@ export const getStockPrice = tool({
       if (!res.ok) throw new Error("Failed to fetch stock data");
 
       const data = await res.json();
-      const quote = data["Global Quote"];
-
-      return {
-        symbol: quote["01. symbol"],
-        price: Number(quote["05. price"]),
-        change: Number(quote["09. change"]),
-        changePercent: Number(quote["10. change percent"].replace("%", "")),
-        volume: Number(quote["06. volume"]),
-        previousClose: Number(quote["08. previous close"]),
-        latestTradingDay: quote["07. latest trading day"],
-      };
+      return normalizeStock(data);
     } catch (error) {
       console.error("Stock API Error:", error);
       return { error: "Unable to fetch stock data." };

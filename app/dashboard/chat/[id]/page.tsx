@@ -3,6 +3,11 @@
 import { useChat } from "@ai-sdk/react";
 import { useState, useRef, useEffect } from "react";
 import { User, Bot } from "lucide-react";
+import { RaceCard } from "@/components/dashboard/chat/race-card";
+import { WeatherCard } from "@/components/dashboard/chat/weather-card";
+import { StockCard } from "@/components/dashboard/chat/stock-card";
+import { F1MatchOutput, WeatherOutput, StockPriceOutput } from "@/types";
+import { Button } from "@/components/ui/button";
 
 export default function Chat() {
   const [input, setInput] = useState("");
@@ -14,8 +19,8 @@ export default function Chat() {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:to-zinc-900">
-      <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-6 space-y-6 max-w-4xl w-full mx-auto">
+    <div className="flex flex-col h-[calc(100vh-4rem)] bg-background">
+      <div className="flex-1 overflow-y-auto no-scrollbar px-2 py-4 md:px-4 md:py-6 space-y-6 max-w-4xl w-full mx-auto">
         {messages.map((message) => {
           const isUser = message.role === "user";
 
@@ -29,18 +34,18 @@ export default function Chat() {
               <div
                 className={`flex items-center justify-center h-10 w-10 rounded-full shadow-md ${
                   isUser
-                    ? "bg-blue-500 text-white"
-                    : "bg-emerald-500 text-white"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-foreground"
                 }`}
               >
                 {isUser ? <User size={18} /> : <Bot size={18} />}
               </div>
 
               <div
-                className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-md whitespace-pre-wrap ${
+                className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-3 py-2 md:px-4 md:py-3 text-sm shadow-md whitespace-pre-wrap ${
                   isUser
-                    ? "bg-blue-500 text-white rounded-bl-none"
-                    : "bg-white dark:bg-zinc-800 dark:text-zinc-100 rounded-br-none"
+                    ? "bg-primary text-primary-foreground rounded-bl-none"
+                    : "bg-card text-card-foreground rounded-br-none border border-border"
                 }`}
               >
                 {message.parts.map((part, i) => {
@@ -48,17 +53,36 @@ export default function Chat() {
                     case "text":
                       return <div key={`${message.id}-${i}`}>{part.text}</div>;
 
-                    case "tool-weather":
-                    case "tool-f1Matches":
-                    case "tool-stockPrice":
+                    case "tool-weather": {
+                      if (!part.output) return null;
                       return (
-                        <div
+                        <WeatherCard
                           key={`${message.id}-${i}`}
-                          className="mt-2 p-2 text-xs bg-black/5 dark:bg-white/5 rounded-md"
-                        >
-                          {JSON.stringify(part.output, null, 2)}
-                        </div>
+                          weatherData={part.output as WeatherOutput}
+                        />
                       );
+                    }
+
+                    case "tool-f1Matches": {
+                      if (!part.output) return null;
+
+                      return (
+                        <RaceCard
+                          key={`${message.id}-${i}`}
+                          raceData={part.output as F1MatchOutput}
+                        />
+                      );
+                    }
+
+                    case "tool-stockPrice": {
+                      if (!part.output) return null;
+                      return (
+                        <StockCard
+                          key={`${message.id}-${i}`}
+                          stockData={part.output as StockPriceOutput}
+                        />
+                      );
+                    }
 
                     default:
                       return null;
@@ -71,10 +95,10 @@ export default function Chat() {
 
         {status === "streaming" && (
           <div className="flex items-center gap-3 flex-row-reverse">
-            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-emerald-500 text-white">
+            <div className="flex items-center justify-center h-10 w-10 rounded-full bg-muted text-foreground">
               <Bot size={18} />
             </div>
-            <div className="bg-white dark:bg-zinc-800 px-4 py-3 rounded-2xl rounded-br-none shadow-md text-sm animate-pulse">
+            <div className="bg-card text-card-foreground border border-border px-4 py-3 rounded-2xl rounded-br-none shadow-md text-sm animate-pulse">
               Thinking...
             </div>
           </div>
@@ -90,21 +114,18 @@ export default function Chat() {
           sendMessage({ text: input });
           setInput("");
         }}
-        className="border-t bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md p-4"
+        className="border-t border-border bg-background/70 backdrop-blur-md p-2 md:p-4"
       >
         <div className="max-w-4xl mx-auto flex gap-3">
           <input
             value={input}
             onChange={(e) => setInput(e.currentTarget.value)}
             placeholder="Type your message..."
-            className="flex-1 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+            className="flex-1 rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
           />
-          <button
-            type="submit"
-            className="px-5 py-3 rounded-xl bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition shadow-md"
-          >
+          <Button type="submit" variant="default">
             Send
-          </button>
+          </Button>
         </div>
       </form>
     </div>

@@ -20,6 +20,10 @@ export async function POST(req: Request) {
         f1Matches: getF1Matches,
         stockPrice: getStockPrice,
       },
+      onFinish: ({ response }) => {
+        console.log("stored to db completed");
+        console.log(JSON.stringify(response.messages, null, 2));
+      },
     });
 
     return result.toUIMessageStreamResponse();
