@@ -17,12 +17,16 @@ export function SidebarHeader() {
 
   const handleNewChat = async () => {
     try {
-      const id = await generateConversation();
+      const result = await generateConversation();
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
       toast.success("New chat created");
-      router.push(`/dashboard/chat/${id}`);
+      router.push(`/dashboard/chat/${result.id}`);
       setOpenMobile(false);
-    } catch (error) {
-      toast.error("Failed to create new chat");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
     }
   };
 

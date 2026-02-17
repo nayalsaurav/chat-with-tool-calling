@@ -4,13 +4,22 @@ import { useRouter } from "next/navigation";
 import { generateConversation } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 export function NewChatButton() {
   const router = useRouter();
 
   async function handleClick() {
-    const id = await generateConversation();
-    router.push(`/dashboard/chat/${id}`);
+    try {
+      const result = await generateConversation();
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      router.push(`/dashboard/chat/${result.id}`);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    }
   }
 
   return (

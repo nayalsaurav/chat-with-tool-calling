@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { generateConversation } from "@/app/dashboard/actions";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import { toast } from "sonner";
 
 export function DashboardChatInput() {
   const [input, setInput] = useState("");
@@ -17,10 +18,16 @@ export function DashboardChatInput() {
 
     setLoading(true);
     try {
-      const id = await generateConversation();
+      const result = await generateConversation();
+      if (!result.success) {
+        toast.error(result.error);
+        setLoading(false);
+        return;
+      }
       sessionStorage.setItem("initialMessage", input.trim());
-      router.push(`/dashboard/chat/${id}`);
+      router.push(`/dashboard/chat/${result.id}`);
     } catch {
+      toast.error("Something went wrong. Please try again.");
       setLoading(false);
     }
   }

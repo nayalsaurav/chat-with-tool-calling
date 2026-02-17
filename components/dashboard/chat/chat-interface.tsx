@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { AnimatedText } from "./animate-text";
 import { EmptyChatState } from "./empty-chat-state";
 import { ChatForm } from "./chat-form";
+import { toast } from "sonner";
 
 interface ChatInterfaceProps {
   id: string;
@@ -35,6 +36,14 @@ export function ChatInterface({
     onFinish: () => {
       if (initialTitle === "New Chat") {
         router.refresh();
+      }
+    },
+    onError: (error) => {
+      try {
+        const parsed = JSON.parse(error.message);
+        toast.error(parsed.error || "Something went wrong.");
+      } catch {
+        toast.error("Something went wrong. Please try again.");
       }
     },
   });
