@@ -134,4 +134,4 @@ Ensure you have the following API keys:
 
 ---
 
-Built with ❤️ by [Saurav Nayal](https://github.com/saurav-nayal)
+Built with ❤️ by [Saurav Nayal](https://nayalsaurav.in/)
