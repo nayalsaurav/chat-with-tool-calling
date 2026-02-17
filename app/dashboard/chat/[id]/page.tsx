@@ -16,7 +16,7 @@ export default async function ChatPage({ params }: PageProps) {
   const { id } = await params;
   const session = await auth();
   if (!session?.user?.id) {
-    return redirect("/login");
+    return redirect("/signin");
   }
   const [existingConv] = await db
     .select()

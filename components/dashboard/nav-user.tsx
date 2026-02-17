@@ -27,7 +27,7 @@ export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
   const handleLogout = async () => {
     try {
-      await signOut();
+      await signOut({ callbackUrl: "/" });
       toast.success("Logged out successfully");
     } catch (error) {
       console.error(error);
