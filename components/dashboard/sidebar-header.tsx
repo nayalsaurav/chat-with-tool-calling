@@ -5,7 +5,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Plus, MessageCircle } from "lucide-react";
+import { Plus } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { generateConversation } from "@/app/dashboard/actions";
 import { toast } from "sonner";
@@ -32,11 +33,17 @@ export function SidebarHeader() {
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <MessageCircle className="size-5" />
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+            <Image
+              src="/logo.png"
+              alt="Nexa Chat"
+              width={40}
+              height={40}
+              priority
+            />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-bold text-lg">Chat App</span>
+            <span className="truncate font-bold text-lg">Nexa Chat</span>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

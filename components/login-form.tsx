@@ -25,7 +25,7 @@ export function LoginForm() {
     <div className="flex flex-col gap-6 max-w-sm mx-auto">
       <div className="space-y-1 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Welcome to Chat App
+          Welcome to Nexa Chat
         </h1>
         <p className="text-sm text-muted-foreground">
           Sign in or create an account

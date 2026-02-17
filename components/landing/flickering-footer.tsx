@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import * as Color from "color-bits";
 import Link from "next/link";
-import { Bot } from "lucide-react";
+import Image from "next/image";
 import React, {
   useCallback,
   useEffect,
@@ -253,8 +253,14 @@ export const FlickeringFooter = () => {
     <footer id="footer" className="w-full pb-0">
       <div className="flex items-center justify-between px-6 py-8 mx-auto max-w-5xl">
         <Link href="/" className="flex items-center gap-2">
-          <Bot className="size-5 text-primary" />
-          <span className="text-sm font-semibold text-primary">Chat App</span>
+          <Image
+            src="/logo.png"
+            alt="Nexa Chat"
+            width={40}
+            height={40}
+            priority
+          />
+          <span className="text-sm font-semibold text-primary">Nexa Chat</span>
         </Link>
         <p className="text-sm text-muted-foreground">
           Made by{" "}
@@ -273,7 +279,7 @@ export const FlickeringFooter = () => {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-transparent from-40% to-background" />
         <div className="absolute inset-0 mx-6">
           <FlickeringGrid
-            text={tablet ? "AI Chat" : "Chat with Tool Calling"}
+            text={tablet ? "Nexa Chat" : "Nexa Chat"}
             fontSize={tablet ? 60 : 72}
             className="h-full w-full"
             squareSize={2}

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 
 export default function LoginPage() {
@@ -21,10 +20,14 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-1 flex-col p-6 md:p-10">
           <div className="flex justify-center md:justify-start">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm">
-                <GalleryVerticalEnd className="h-4 w-4" />
-              </div>
-              <span className="text-lg tracking-tight">Chat App</span>
+              <Image
+                src="/logo.png"
+                alt="Nexa Chat"
+                width={40}
+                height={40}
+                priority
+              />
+              <span className="text-lg tracking-tight">Nexa Chat</span>
             </Link>
           </div>
 

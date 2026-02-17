@@ -1,8 +1,9 @@
 "use client";
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Bot, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 const menuItems = [
@@ -15,23 +16,27 @@ export const Navbar = () => {
   const { data: session } = useSession();
 
   return (
-    <header>
+    <header className="sticky top-0 z-20">
       <nav
         data-state={menuState && "active"}
-        className="group fixed z-20 w-full border-b border-dashed bg-white backdrop-blur md:relative dark:bg-zinc-950/50 lg:dark:bg-transparent"
+        className="group w-full border-b border-dashed bg-white/80 backdrop-blur md:bg-white/80 dark:bg-zinc-950/80 lg:dark:bg-zinc-950/80 py-2"
       >
         <div className="m-auto max-w-5xl px-6">
-          <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
+          <div className="flex flex-wrap items-center justify-between gap-6 lg:gap-0">
             <div className="flex w-full justify-between lg:w-auto">
               <Link
                 href="/"
                 aria-label="home"
-                className="flex items-center gap-2"
+                className="flex items-center justify-center gap-2"
               >
-                <Bot className="size-5 text-primary" />
-                <span className="text-lg font-bold tracking-tight">
-                  Chat App
-                </span>
+                <Image
+                  src="/logo.png"
+                  alt="Nexa Chat"
+                  width={40}
+                  height={40}
+                  priority
+                />
+                <span className="text-lg font-bold">Nexa Chat</span>
               </Link>
 
               <button

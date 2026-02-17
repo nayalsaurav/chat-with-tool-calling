@@ -42,7 +42,7 @@ export const HeroSection = () => {
                   <img
                     className="rounded-[--radius] z-[2] relative border"
                     src="/dashboard-dark.png"
-                    alt="ChatAI preview"
+                    alt="Nexa Chat preview"
                     width={2880}
                     height={2074}
                   />
